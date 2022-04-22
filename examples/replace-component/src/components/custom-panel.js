@@ -19,21 +19,48 @@
 // THE SOFTWARE.
 
 import React from 'react';
-import {Icons} from 'kepler.gl/components';
+import {Icons,withState} from 'kepler.gl/components';
+
+import {SidePanelFactory} from 'kepler.gl/components';
+import {visStateLens} from 'kepler.gl/reducers';
+
+import {setMapConfig} from '../app-reducer';
+
+
+const MyPanels = props => {
+  console.log(props);
+  if (props.activeSidePanel === 'rocket') {
+    return <div className="rocket-panel">Rocket</div>;
+  } else if (props.activeSidePanel === 'chart') {
+    return <div className="chart-panel">Charts?</div>;
+  }
+
+  return null;
+};
+
+MyPanels.defaultProps = {
+  getProps: props => ({
+    layers: props
+  })
+};
 
 function CustomSidePanelsFactory() {
-  const CustomPanels = props => {
-    if (props.activeSidePanel === 'rocket') {
-      return <div className="rocket-panel">Rocket</div>;
-    } else if (props.activeSidePanel === 'chart') {
-      return <div className="rocket-panel">Charts?</div>;
+  return withState(
+    // lenses
+    [visStateLens],
+    // mapStateToProps
+    state => ({mapState: state}),
+    {
+      onClickSaveConfig: setMapConfig
     }
-
-    return null;
-  };
-
-  CustomPanels.defaultProps = {
+  )(MyPanels);
+}
+function CustomSidePanelFactory(...deps) {
+  const CustomSidePanel = SidePanelFactory(...deps);
+  CustomSidePanel.defaultProps = {
+    ...CustomSidePanel.defaultProps,
     panels: [
+     
       {
         id: 'rocket',
         label: 'Rocket',
@@ -43,14 +70,14 @@ function CustomSidePanelsFactory() {
         id: 'chart',
         label: 'Chart',
         iconComponent: Icons.LineChart
-      }
-    ],
-    getProps: props => ({
-      layers: props.layers
-    })
+      },
+      CustomSidePanel.defaultProps.panels[0],
+      CustomSidePanel.defaultProps.panels[1]
+    ]
   };
-
-  return CustomPanels;
+  return CustomSidePanel;
 }
 
-export default CustomSidePanelsFactory;
+CustomSidePanelFactory.deps = SidePanelFactory.deps;
+export default {CustomSidePanelFactory, CustomSidePanelsFactory};
+

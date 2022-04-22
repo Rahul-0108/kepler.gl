@@ -27,7 +27,7 @@ import {theme} from 'kepler.gl/styles';
 
 import sampleData, {config} from './data/sample-data';
 
-const MAPBOX_TOKEN = process.env.MapboxAccessToken; // eslint-disable-line
+const MAPBOX_TOKEN = "pk.eyJ1IjoicmFodWwxNW1hcCIsImEiOiJjbDI3YWJid3YwYWYzM2txcW81MWRvbDFzIn0.i3M5VictUKvX0Jj6LLcpyQ"; // eslint-disable-line
 
 import {
   SidebarFactory,
@@ -35,13 +35,14 @@ import {
   PanelToggleFactory,
   CustomPanelsFactory,
   MapPopoverFactory,
-  injectComponents
+  injectComponents,
+  SidePanelFactory
 } from 'kepler.gl/components';
 
 import CustomPanelHeaderFactory from './components/panel-header';
 import CustomSidebarFactory from './components/side-bar';
 import CustomPanelToggleFactory from './components/panel-toggle';
-import CustomSidePanelFactory from './components/custom-panel';
+import a from './components/custom-panel';
 import CustomMapPopoverFactory from './components/custom-map-popover';
 
 const StyledMapConfigDisplay = styled.div`
@@ -60,10 +61,12 @@ const StyledMapConfigDisplay = styled.div`
 
 // Inject custom components
 const KeplerGl = injectComponents([
+ 
+  [SidePanelFactory, a.CustomSidePanelFactory],
+  [CustomPanelsFactory, a.CustomSidePanelsFactory],
   [SidebarFactory, CustomSidebarFactory],
   [PanelHeaderFactory, CustomPanelHeaderFactory],
   [PanelToggleFactory, CustomPanelToggleFactory],
-  [CustomPanelsFactory, CustomSidePanelFactory],
   [MapPopoverFactory, CustomMapPopoverFactory]
 ]);
 
