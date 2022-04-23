@@ -23,6 +23,9 @@ import styled from 'styled-components';
 
 import {PanelToggleFactory, Button, Icons, withState} from 'kepler.gl/components';
 import {visStateLens} from 'kepler.gl/reducers';
+// Kepler.gl actions
+import {toggleSidePanel} from 'kepler.gl/actions';
+import keplerGlReducer, {uiStateUpdaters} from 'kepler.gl/reducers';
 
 import {setMapConfig} from '../app-reducer';
 
@@ -37,19 +40,30 @@ const ButtonWrapper = styled.div`
   margin-bottom: 4px;
 `;
 
+// https://docs.kepler.gl/docs/api-reference/advanced-usages/replace-ui-component
+
 const CustomPanelToggleFactory = (...deps) => {
   const PanelToggle = PanelToggleFactory(...deps);
-  const PanelToggleWrapper = props => (
-    <StyledPanelToggleWrapper>
+  const PanelToggleWrapper = props =>  {
+    //console.log("PanelToggle "+ JSON.stringify(props));
+    const a = {id:"rocket",label:"Rocket",onClick:null} ;
+    const b ={...props, panels: [...props.panels,a]};
+  //  console.log("PanelToggleb "+ JSON.stringify(b));
+   return <StyledPanelToggleWrapper>
+     
       <PanelToggle {...props} />
       <ButtonWrapper>
-        <Button onClick={() => props.onClickSaveConfig(props.mapState)} width="120px">
+        <Button onClick={() => {
+        const a= 10;
+       //  props.onClickSaveConfig(props.mapState)
+        props.toggleSidePanel("rocket");
+          }} width="120px">
           <Icons.Files height="12px" />
           Save Config
         </Button>
       </ButtonWrapper>
     </StyledPanelToggleWrapper>
-  );
+    };
 
   return withState(
     // lenses
@@ -57,7 +71,7 @@ const CustomPanelToggleFactory = (...deps) => {
     // mapStateToProps
     state => ({mapState: state.keplerGl.map1}),
     {
-      onClickSaveConfig: setMapConfig
+      toggleSidePanel: toggleSidePanel
     }
   )(PanelToggleWrapper);
 };

@@ -22,12 +22,13 @@ import {PanelHeaderFactory} from 'kepler.gl/components';
 
 // Custom Panel Header renders default panel header, changing its default props
 // to avoid rendering any action items on the top right
+
+// top header where KepLer.gl is written
 export function CustomPanelHeaderFactory() {
   const PanelHeader = PanelHeaderFactory();
-
+  //console.log(PanelHeader.defaultProps);
   PanelHeader.defaultProps = {
     ...PanelHeader.defaultProps,
-    actionItems: []
   };
   return PanelHeader;
 }

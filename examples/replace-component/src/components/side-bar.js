@@ -31,6 +31,7 @@ const StyledSideBarContainer = styled.div`
     padding-right: 0;
     padding-bottom: 0;
     padding-left: 0;
+    background-color:blue;
   }
 `;
 
@@ -53,7 +54,7 @@ const StyledCloseButton = styled.div`
 `;
 
 const CloseButtonFactory = () => {
-  const CloseButton = ({onClick, isOpen}) => (
+  const CloseButton = ({onClick, isOpen}) => ( // These two props will be passed by the Parent Component calling this Component
     <StyledCloseButton className="side-bar__close" onClick={onClick}>
       <Icons.ArrowRight
         height="18px"
@@ -68,7 +69,7 @@ const CloseButtonFactory = () => {
 // adding a wrapper component to edit its style
 function CustomSidebarFactory(CloseButton) {
   const SideBar = SidebarFactory(CloseButton);
-  const CustomSidebar = props => (
+  const CustomSidebar = props => ( // The prop will be passed by the Parent Component calling this Component
     <StyledSideBarContainer>
       <SideBar {...props} />
     </StyledSideBarContainer>
